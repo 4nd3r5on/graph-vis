@@ -1,0 +1,854 @@
+{
+  "nodes": {
+    "1": {
+      "parentIDs": [],
+      "label": "Music",
+      "children": [
+        {"id": 2, "connLabel": "rock music"},
+        {"id": 3, "connLabel": "electronic music"},
+        {"id": 4, "connLabel": "hip hop music"},
+        {"id": 5, "connLabel": "pop music"},
+        {"id": 6, "connLabel": "classical music"},
+        {"id": 50, "connLabel": "music events"},
+        {"id": 51, "connLabel": "music production"}
+      ]
+    },
+    "2": {
+      "parentIDs": [1],
+      "label": "Rock",
+      "children": [
+        {"id": 7, "connLabel": "metal rock"},
+        {"id": 8, "connLabel": "punk rock"},
+        {"id": 9, "connLabel": "alternative rock"},
+        {"id": 50, "connLabel": "rock events"}
+      ]
+    },
+    "3": {
+      "parentIDs": [1],
+      "label": "Electronic",
+      "children": [
+        {"id": 10, "connLabel": "phonk electronic"},
+        {"id": 11, "connLabel": "techno electronic"},
+        {"id": 12, "connLabel": "house electronic"},
+        {"id": 50, "connLabel": "electronic events"}
+      ]
+    },
+    "4": {
+      "parentIDs": [1],
+      "label": "Hip Hop",
+      "children": [
+        {"id": 13, "connLabel": "rap hip hop"},
+        {"id": 14, "connLabel": "trap hip hop"},
+        {"id": 50, "connLabel": "hip hop events"}
+      ]
+    },
+    "5": {
+      "parentIDs": [1],
+      "label": "Pop",
+      "children": [
+        {"id": 15, "connLabel": "indie pop"},
+        {"id": 50, "connLabel": "pop events"}
+      ]
+    },
+    "6": {
+      "parentIDs": [1],
+      "label": "Classical",
+      "children": [
+        {"id": 16, "connLabel": "orchestra classical"},
+        {"id": 50, "connLabel": "classical events"}
+      ]
+    },
+    "7": {
+      "parentIDs": [2],
+      "label": "Metal",
+      "children": [
+        {"id": 17, "connLabel": "death metal"},
+        {"id": 18, "connLabel": "black metal"},
+        {"id": 50, "connLabel": "metal events"}
+      ]
+    },
+    "8": {
+      "parentIDs": [2],
+      "label": "Punk",
+      "children": [
+        {"id": 19, "connLabel": "hardcore punk"},
+        {"id": 50, "connLabel": "punk events"}
+      ]
+    },
+    "9": {
+      "parentIDs": [2],
+      "label": "Alternative",
+      "children": [
+        {"id": 20, "connLabel": "indie alternative"},
+        {"id": 50, "connLabel": "alternative events"}
+      ]
+    },
+    "10": {
+      "parentIDs": [3],
+      "label": "Phonk",
+      "children": [
+        {"id": 21, "connLabel": "drift phonk"},
+        {"id": 50, "connLabel": "phonk events"}
+      ]
+    },
+    "11": {
+      "parentIDs": [3],
+      "label": "Techno",
+      "children": [
+        {"id": 50, "connLabel": "techno events"}
+      ]
+    },
+    "12": {
+      "parentIDs": [3],
+      "label": "House",
+      "children": [
+        {"id": 50, "connLabel": "house events"}
+      ]
+    },
+    "13": {
+      "parentIDs": [4],
+      "label": "Rap",
+      "children": [
+        {"id": 22, "connLabel": "underground rap"},
+        {"id": 50, "connLabel": "rap events"}
+      ]
+    },
+    "14": {
+      "parentIDs": [4],
+      "label": "Trap",
+      "children": [
+        {"id": 50, "connLabel": "trap events"}
+      ]
+    },
+    "15": {
+      "parentIDs": [5],
+      "label": "Indie Pop",
+      "children": [
+        {"id": 50, "connLabel": "indie pop events"}
+      ]
+    },
+    "16": {
+      "parentIDs": [6],
+      "label": "Orchestra",
+      "children": [
+        {"id": 50, "connLabel": "orchestra events"}
+      ]
+    },
+    "17": {
+      "parentIDs": [7],
+      "label": "Death Metal",
+      "children": [
+        {"id": 50, "connLabel": "death metal events"}
+      ]
+    },
+    "18": {
+      "parentIDs": [7],
+      "label": "Black Metal",
+      "children": [
+        {"id": 50, "connLabel": "black metal events"}
+      ]
+    },
+    "19": {
+      "parentIDs": [8],
+      "label": "Hardcore",
+      "children": [
+        {"id": 50, "connLabel": "hardcore events"}
+      ]
+    },
+    "20": {
+      "parentIDs": [9],
+      "label": "Indie",
+      "children": [
+        {"id": 50, "connLabel": "indie events"}
+      ]
+    },
+    "21": {
+      "parentIDs": [10],
+      "label": "Drift Phonk",
+      "children": [
+        {"id": 50, "connLabel": "drift phonk events"}
+      ]
+    },
+    "22": {
+      "parentIDs": [13],
+      "label": "Underground Rap",
+      "children": [
+        {"id": 50, "connLabel": "underground rap events"}
+      ]
+    },
+    "23": {
+      "parentIDs": [],
+      "label": "Sports",
+      "children": [
+        {"id": 24, "connLabel": "team sports"},
+        {"id": 25, "connLabel": "individual sports"},
+        {"id": 26, "connLabel": "extreme sports"},
+        {"id": 50, "connLabel": "sports events"}
+      ]
+    },
+    "24": {
+      "parentIDs": [23],
+      "label": "Team Sports",
+      "children": [
+        {"id": 27, "connLabel": "football team sports"},
+        {"id": 28, "connLabel": "basketball team sports"},
+        {"id": 29, "connLabel": "volleyball team sports"},
+        {"id": 30, "connLabel": "hockey team sports"}
+      ]
+    },
+    "25": {
+      "parentIDs": [23],
+      "label": "Individual Sports",
+      "children": [
+        {"id": 31, "connLabel": "tennis individual sports"},
+        {"id": 32, "connLabel": "swimming individual sports"},
+        {"id": 33, "connLabel": "athletics individual sports"}
+      ]
+    },
+    "26": {
+      "parentIDs": [23],
+      "label": "Extreme Sports",
+      "children": [
+        {"id": 34, "connLabel": "skateboarding extreme sports"},
+        {"id": 35, "connLabel": "snowboarding extreme sports"},
+        {"id": 36, "connLabel": "parkour extreme sports"},
+        {"id": 50, "connLabel": "extreme sports events"}
+      ]
+    },
+    "27": {
+      "parentIDs": [24],
+      "label": "Football",
+      "children": [
+        {"id": 37, "connLabel": "premier league football"},
+        {"id": 38, "connLabel": "champions league football"},
+        {"id": 50, "connLabel": "football events"}
+      ]
+    },
+    "28": {
+      "parentIDs": [24],
+      "label": "Basketball",
+      "children": [
+        {"id": 39, "connLabel": "nba basketball"},
+        {"id": 50, "connLabel": "basketball events"}
+      ]
+    },
+    "29": {
+      "parentIDs": [24],
+      "label": "Volleyball",
+      "children": [
+        {"id": 50, "connLabel": "volleyball events"}
+      ]
+    },
+    "30": {
+      "parentIDs": [24],
+      "label": "Hockey",
+      "children": [
+        {"id": 40, "connLabel": "nhl hockey"},
+        {"id": 50, "connLabel": "hockey events"}
+      ]
+    },
+    "31": {
+      "parentIDs": [25],
+      "label": "Tennis",
+      "children": [
+        {"id": 50, "connLabel": "tennis events"}
+      ]
+    },
+    "32": {
+      "parentIDs": [25],
+      "label": "Swimming",
+      "children": [
+        {"id": 50, "connLabel": "swimming events"}
+      ]
+    },
+    "33": {
+      "parentIDs": [25],
+      "label": "Athletics",
+      "children": [
+        {"id": 50, "connLabel": "athletics events"}
+      ]
+    },
+    "34": {
+      "parentIDs": [26],
+      "label": "Skateboarding",
+      "children": [
+        {"id": 50, "connLabel": "skateboarding events"}
+      ]
+    },
+    "35": {
+      "parentIDs": [26],
+      "label": "Snowboarding",
+      "children": [
+        {"id": 50, "connLabel": "snowboarding events"}
+      ]
+    },
+    "36": {
+      "parentIDs": [26],
+      "label": "Parkour",
+      "children": [
+        {"id": 50, "connLabel": "parkour events"}
+      ]
+    },
+    "37": {
+      "parentIDs": [27],
+      "label": "Premier League",
+      "children": [
+        {"id": 50, "connLabel": "premier league events"}
+      ]
+    },
+    "38": {
+      "parentIDs": [27],
+      "label": "Champions League",
+      "children": [
+        {"id": 50, "connLabel": "champions league events"}
+      ]
+    },
+    "39": {
+      "parentIDs": [28],
+      "label": "NBA",
+      "children": [
+        {"id": 50, "connLabel": "nba events"}
+      ]
+    },
+    "40": {
+      "parentIDs": [30],
+      "label": "NHL",
+      "children": [
+        {"id": 50, "connLabel": "nhl events"}
+      ]
+    },
+    "41": {
+      "parentIDs": [],
+      "label": "Science",
+      "children": [
+        {"id": 42, "connLabel": "mathematics science"},
+        {"id": 43, "connLabel": "physics science"},
+        {"id": 44, "connLabel": "chemistry science"},
+        {"id": 45, "connLabel": "biology science"},
+        {"id": 46, "connLabel": "computer science"},
+        {"id": 52, "connLabel": "science education"}
+      ]
+    },
+    "42": {
+      "parentIDs": [41],
+      "label": "Mathematics",
+      "children": [
+        {"id": 47, "connLabel": "algebra mathematics"},
+        {"id": 48, "connLabel": "calculus mathematics"},
+        {"id": 49, "connLabel": "statistics mathematics"},
+        {"id": 52, "connLabel": "mathematics education"}
+      ]
+    },
+    "43": {
+      "parentIDs": [41],
+      "label": "Physics",
+      "children": [
+        {"id": 53, "connLabel": "quantum physics"},
+        {"id": 54, "connLabel": "astrophysics"},
+        {"id": 52, "connLabel": "physics education"}
+      ]
+    },
+    "44": {
+      "parentIDs": [41],
+      "label": "Chemistry",
+      "children": [
+        {"id": 55, "connLabel": "organic chemistry"},
+        {"id": 52, "connLabel": "chemistry education"}
+      ]
+    },
+    "45": {
+      "parentIDs": [41],
+      "label": "Biology",
+      "children": [
+        {"id": 56, "connLabel": "microbiology"},
+        {"id": 57, "connLabel": "genetics biology"},
+        {"id": 52, "connLabel": "biology education"}
+      ]
+    },
+    "46": {
+      "parentIDs": [41],
+      "label": "Computer Science",
+      "children": [
+        {"id": 58, "connLabel": "programming computer science"},
+        {"id": 59, "connLabel": "ai computer science"},
+        {"id": 60, "connLabel": "web development computer science"},
+        {"id": 52, "connLabel": "computer science education"}
+      ]
+    },
+    "47": {
+      "parentIDs": [42],
+      "label": "Algebra",
+      "children": [
+        {"id": 52, "connLabel": "algebra education"}
+      ]
+    },
+    "48": {
+      "parentIDs": [42],
+      "label": "Calculus",
+      "children": [
+        {"id": 52, "connLabel": "calculus education"}
+      ]
+    },
+    "49": {
+      "parentIDs": [42],
+      "label": "Statistics",
+      "children": [
+        {"id": 52, "connLabel": "statistics education"}
+      ]
+    },
+    "50": {
+      "parentIDs": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+      "label": "Events",
+      "children": [
+        {"id": 61, "connLabel": "concerts events"},
+        {"id": 62, "connLabel": "festivals events"},
+        {"id": 63, "connLabel": "competitions events"}
+      ]
+    },
+    "51": {
+      "parentIDs": [1],
+      "label": "Music Production",
+      "children": [
+        {"id": 64, "connLabel": "mixing music production"},
+        {"id": 65, "connLabel": "mastering music production"}
+      ]
+    },
+    "52": {
+      "parentIDs": [41, 42, 43, 44, 45, 46, 47, 48, 49],
+      "label": "Education",
+      "children": [
+        {"id": 66, "connLabel": "online courses education"},
+        {"id": 67, "connLabel": "tutorials education"}
+      ]
+    },
+    "53": {
+      "parentIDs": [43],
+      "label": "Quantum Physics",
+      "children": [
+        {"id": 52, "connLabel": "quantum physics education"}
+      ]
+    },
+    "54": {
+      "parentIDs": [43],
+      "label": "Astrophysics",
+      "children": [
+        {"id": 52, "connLabel": "astrophysics education"}
+      ]
+    },
+    "55": {
+      "parentIDs": [44],
+      "label": "Organic Chemistry",
+      "children": [
+        {"id": 52, "connLabel": "organic chemistry education"}
+      ]
+    },
+    "56": {
+      "parentIDs": [45],
+      "label": "Microbiology",
+      "children": [
+        {"id": 52, "connLabel": "microbiology education"}
+      ]
+    },
+    "57": {
+      "parentIDs": [45],
+      "label": "Genetics",
+      "children": [
+        {"id": 52, "connLabel": "genetics education"}
+      ]
+    },
+    "58": {
+      "parentIDs": [46],
+      "label": "Programming",
+      "children": [
+        {"id": 68, "connLabel": "python programming"},
+        {"id": 69, "connLabel": "javascript programming"},
+        {"id": 70, "connLabel": "go programming"},
+        {"id": 52, "connLabel": "programming education"}
+      ]
+    },
+    "59": {
+      "parentIDs": [46],
+      "label": "AI",
+      "children": [
+        {"id": 71, "connLabel": "machine learning ai"},
+        {"id": 72, "connLabel": "deep learning ai"},
+        {"id": 52, "connLabel": "ai education"}
+      ]
+    },
+    "60": {
+      "parentIDs": [46],
+      "label": "Web Development",
+      "children": [
+        {"id": 73, "connLabel": "frontend web development"},
+        {"id": 74, "connLabel": "backend web development"},
+        {"id": 52, "connLabel": "web development education"}
+      ]
+    },
+    "61": {
+      "parentIDs": [50],
+      "label": "Concerts",
+      "children": []
+    },
+    "62": {
+      "parentIDs": [50],
+      "label": "Festivals",
+      "children": []
+    },
+    "63": {
+      "parentIDs": [50],
+      "label": "Competitions",
+      "children": []
+    },
+    "64": {
+      "parentIDs": [51],
+      "label": "Mixing",
+      "children": []
+    },
+    "65": {
+      "parentIDs": [51],
+      "label": "Mastering",
+      "children": []
+    },
+    "66": {
+      "parentIDs": [52],
+      "label": "Online Courses",
+      "children": []
+    },
+    "67": {
+      "parentIDs": [52],
+      "label": "Tutorials",
+      "children": []
+    },
+    "68": {
+      "parentIDs": [58],
+      "label": "Python",
+      "children": [
+        {"id": 52, "connLabel": "python education"}
+      ]
+    },
+    "69": {
+      "parentIDs": [58],
+      "label": "JavaScript",
+      "children": [
+        {"id": 52, "connLabel": "javascript education"}
+      ]
+    },
+    "70": {
+      "parentIDs": [58],
+      "label": "Go",
+      "children": [
+        {"id": 52, "connLabel": "go education"}
+      ]
+    },
+    "71": {
+      "parentIDs": [59],
+      "label": "Machine Learning",
+      "children": [
+        {"id": 52, "connLabel": "machine learning education"}
+      ]
+    },
+    "72": {
+      "parentIDs": [59],
+      "label": "Deep Learning",
+      "children": [
+        {"id": 52, "connLabel": "deep learning education"}
+      ]
+    },
+    "73": {
+      "parentIDs": [60],
+      "label": "Frontend",
+      "children": [
+        {"id": 75, "connLabel": "react frontend"},
+        {"id": 52, "connLabel": "frontend education"}
+      ]
+    },
+    "74": {
+      "parentIDs": [60],
+      "label": "Backend",
+      "children": [
+        {"id": 76, "connLabel": "nodejs backend"},
+        {"id": 52, "connLabel": "backend education"}
+      ]
+    },
+    "75": {
+      "parentIDs": [73],
+      "label": "React",
+      "children": [
+        {"id": 52, "connLabel": "react education"}
+      ]
+    },
+    "76": {
+      "parentIDs": [74],
+      "label": "Node.js",
+      "children": [
+        {"id": 52, "connLabel": "nodejs education"}
+      ]
+    },
+    "77": {
+      "parentIDs": [],
+      "label": "Engineering",
+      "children": [
+        {"id": 78, "connLabel": "mechanical engineering"},
+        {"id": 79, "connLabel": "electrical engineering"},
+        {"id": 80, "connLabel": "civil engineering"},
+        {"id": 52, "connLabel": "engineering education"}
+      ]
+    },
+    "78": {
+      "parentIDs": [77],
+      "label": "Mechanical Engineering",
+      "children": [
+        {"id": 81, "connLabel": "robotics mechanical engineering"},
+        {"id": 52, "connLabel": "mechanical engineering education"}
+      ]
+    },
+    "79": {
+      "parentIDs": [77],
+      "label": "Electrical Engineering",
+      "children": [
+        {"id": 52, "connLabel": "electrical engineering education"}
+      ]
+    },
+    "80": {
+      "parentIDs": [77],
+      "label": "Civil Engineering",
+      "children": [
+        {"id": 52, "connLabel": "civil engineering education"}
+      ]
+    },
+    "81": {
+      "parentIDs": [78],
+      "label": "Robotics",
+      "children": [
+        {"id": 52, "connLabel": "robotics education"}
+      ]
+    },
+    "82": {
+      "parentIDs": [],
+      "label": "Art",
+      "children": [
+        {"id": 83, "connLabel": "digital art"},
+        {"id": 84, "connLabel": "traditional art"},
+        {"id": 85, "connLabel": "photography art"},
+        {"id": 86, "connLabel": "animation art"}
+      ]
+    },
+    "83": {
+      "parentIDs": [82],
+      "label": "Digital Art",
+      "children": [
+        {"id": 87, "connLabel": "3d digital art"},
+        {"id": 88, "connLabel": "illustration digital art"}
+      ]
+    },
+    "84": {
+      "parentIDs": [82],
+      "label": "Traditional Art",
+      "children": [
+        {"id": 89, "connLabel": "painting traditional art"},
+        {"id": 90, "connLabel": "drawing traditional art"}
+      ]
+    },
+    "85": {
+      "parentIDs": [82],
+      "label": "Photography",
+      "children": [
+        {"id": 91, "connLabel": "landscape photography"},
+        {"id": 92, "connLabel": "portrait photography"}
+      ]
+    },
+    "86": {
+      "parentIDs": [82],
+      "label": "Animation",
+      "children": [
+        {"id": 93, "connLabel": "2d animation"},
+        {"id": 94, "connLabel": "3d animation"}
+      ]
+    },
+    "87": {
+      "parentIDs": [83],
+      "label": "3D Art",
+      "children": []
+    },
+    "88": {
+      "parentIDs": [83],
+      "label": "Illustration",
+      "children": []
+    },
+    "89": {
+      "parentIDs": [84],
+      "label": "Painting",
+      "children": []
+    },
+    "90": {
+      "parentIDs": [84],
+      "label": "Drawing",
+      "children": []
+    },
+    "91": {
+      "parentIDs": [85],
+      "label": "Landscape Photography",
+      "children": []
+    },
+    "92": {
+      "parentIDs": [85],
+      "label": "Portrait Photography",
+      "children": []
+    },
+    "93": {
+      "parentIDs": [86],
+      "label": "2D Animation",
+      "children": []
+    },
+    "94": {
+      "parentIDs": [86],
+      "label": "3D Animation",
+      "children": []
+    },
+    "95": {
+      "parentIDs": [],
+      "label": "Memes",
+      "children": [
+        {"id": 96, "connLabel": "dank memes"},
+        {"id": 97, "connLabel": "wholesome memes"},
+        {"id": 98, "connLabel": "video memes"}
+      ]
+    },
+    "96": {
+      "parentIDs": [95],
+      "label": "Dank Memes",
+      "children": []
+    },
+    "97": {
+      "parentIDs": [95],
+      "label": "Wholesome Memes",
+      "children": []
+    },
+    "98": {
+      "parentIDs": [95],
+      "label": "Video Memes",
+      "children": []
+    },
+    "99": {
+      "parentIDs": [],
+      "label": "Pets",
+      "children": [
+        {"id": 100, "connLabel": "cats pets"},
+        {"id": 101, "connLabel": "dogs pets"},
+        {"id": 102, "connLabel": "birds pets"},
+        {"id": 103, "connLabel": "reptiles pets"}
+      ]
+    },
+    "100": {
+      "parentIDs": [99],
+      "label": "Cats",
+      "children": [
+        {"id": 104, "connLabel": "cat care"},
+        {"id": 105, "connLabel": "cat memes"}
+      ]
+    },
+    "101": {
+      "parentIDs": [99],
+      "label": "Dogs",
+      "children": [
+        {"id": 106, "connLabel": "dog training"},
+        {"id": 107, "connLabel": "dog breeds"}
+      ]
+    },
+    "102": {
+      "parentIDs": [99],
+      "label": "Birds",
+      "children": [
+        {"id": 108, "connLabel": "parrots birds"}
+      ]
+    },
+    "103": {
+      "parentIDs": [99],
+      "label": "Reptiles",
+      "children": [
+        {"id": 109, "connLabel": "snakes reptiles"}
+      ]
+    },
+    "104": {
+      "parentIDs": [100],
+      "label": "Cat Care",
+      "children": []
+    },
+    "105": {
+      "parentIDs": [100],
+      "label": "Cat Memes",
+      "children": []
+    },
+    "106": {
+      "parentIDs": [101],
+      "label": "Dog Training",
+      "children": []
+    },
+    "107": {
+      "parentIDs": [101],
+      "label": "Dog Breeds",
+      "children": []
+    },
+    "108": {
+      "parentIDs": [102],
+      "label": "Parrots",
+      "children": []
+    },
+    "109": {
+      "parentIDs": [103],
+      "label": "Snakes",
+      "children": []
+    },
+    "110": {
+      "parentIDs": [],
+      "label": "Gaming",
+      "children": [
+        {"id": 111, "connLabel": "pc gaming"},
+        {"id": 112, "connLabel": "console gaming"},
+        {"id": 113, "connLabel": "mobile gaming"},
+        {"id": 50, "connLabel": "gaming events"}
+      ]
+    },
+    "111": {
+      "parentIDs": [110],
+      "label": "PC Gaming",
+      "children": [
+        {"id": 114, "connLabel": "fps pc gaming"},
+        {"id": 115, "connLabel": "moba pc gaming"}
+      ]
+    },
+    "112": {
+      "parentIDs": [110],
+      "label": "Console Gaming",
+      "children": [
+        {"id": 116, "connLabel": "playstation console gaming"},
+        {"id": 117, "connLabel": "xbox console gaming"}
+      ]
+    },
+    "113": {
+      "parentIDs": [110],
+      "label": "Mobile Gaming",
+      "children": []
+    },
+    "114": {
+      "parentIDs": [111],
+      "label": "FPS Games",
+      "children": []
+    },
+    "115": {
+      "parentIDs": [111],
+      "label": "MOBA Games",
+      "children": []
+    },
+    "116": {
+      "parentIDs": [112],
+      "label": "PlayStation",
+      "children": []
+    },
+    "117": {
+      "parentIDs": [112],
+      "label": "Xbox",
+      "children": []
+    }
+  }
+}
