@@ -1,6 +1,7 @@
 package physics
 
 import (
+	"graph-positioner/pkg/graph"
 	"graph-positioner/pkg/vec"
 )
 
@@ -48,4 +49,50 @@ func AttractiveForce(from, to vec.Vec, springLen float64) vec.Vec {
 	}
 
 	return vec.Mul(vec.Unit(diff), magnitude)
+}
+
+// ComputeForces recursively calculates forces in the hierarchy
+func RecursiveComputeForces(id int64, nodes map[int64]*graph.Node, forceMap map[int64]vec.Vec) {
+	node := nodes[id]
+
+	// compute force for root from every non-parent
+	fSum := vec.Vec{}
+	for otherID, other := range nodes {
+		_, isParent := node.ParentIDsMap[otherID]
+		_, isChild := node.ChildrenIDsMap[otherID]
+		if otherID == id || isParent || isChild {
+			continue
+		}
+		fSum = vec.Add(
+			fSum,
+			RepulsiveForce(node.Pos, other.Pos, node.SpringLen*2),
+			AttractiveForce(node.Pos, other.Pos, node.SpringLen*2),
+		)
+	}
+	forceMap[id] = vec.Add(forceMap[id], fSum)
+
+	// compute forces for every children
+	for _, childData := range node.Children {
+		child := nodes[childData.ID]
+		forceMap[childData.ID] = vec.Add(
+			forceMap[childData.ID],
+			AttractiveForce(child.Pos, node.Pos, node.SpringLen),
+			vec.Div(RepulsiveForce(child.Pos, node.Pos, node.SpringLen), float64(len(child.ParentIDs))),
+		)
+		RecursiveComputeForces(childData.ID, nodes, forceMap)
+	}
+}
+
+// HandleFreeNodes applies only repulsive forces between isolated nodes
+func HandleFreeNodes(classified graph.ClassifiedNodes, nodes map[int64]*graph.Node, forceMap map[int64]vec.Vec) {
+	free := classified.Free
+	for i := range free {
+		for j := i + 1; j < len(free); j++ {
+			from := nodes[free[i]]
+			to := nodes[free[j]]
+			f := RepulsiveForce(from.Pos, to.Pos, from.SpringLen)
+			forceMap[free[i]] = vec.Add(forceMap[free[i]], f)
+			forceMap[free[j]] = vec.Add(forceMap[free[j]], vec.Mul(f, -1))
+		}
+	}
 }

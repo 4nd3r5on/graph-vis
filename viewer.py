@@ -7,6 +7,7 @@ Usage:
 
 Controls:
     Left mouse drag on empty space -> pan (translate) the canvas
+    Mouse wheel -> zoom in/out
     Shift + Left drag on a node -> move that node (updates positions in-memory)
     S key -> save current positions to out.json (overwrites)
     Esc or window close -> exit
@@ -29,6 +30,9 @@ EDGE_COLOR = (200, 200, 200)
 EDGE_LABEL_BG = (20, 20, 20)
 TEXT_COLOR = (245, 245, 245)
 FPS = 60
+MIN_SCALE = 0.1
+MAX_SCALE = 5.0
+ZOOM_FACTOR = 1.1
 
 def load_input(input_path: Path) -> Dict[str, Any]:
     with input_path.open('r', encoding='utf-8') as f:
@@ -47,9 +51,14 @@ def save_out(out_path: Path, node_positions: Dict[int, Dict[str, float]]):
         json.dump(arr, f, indent=2)
     print(f"Saved {len(arr)} nodes to {out_path}")
 
-def to_screen(world_pos: Tuple[float, float], offset: Tuple[float, float]) -> Tuple[int, int]:
-    x = int(world_pos[0] + offset[0])
-    y = int(world_pos[1] + offset[1])
+def to_screen(world_pos: Tuple[float, float], offset: Tuple[float, float], scale: float) -> Tuple[int, int]:
+    x = int(world_pos[0] * scale + offset[0])
+    y = int(world_pos[1] * scale + offset[1])
+    return x, y
+
+def to_world(screen_pos: Tuple[int, int], offset: Tuple[float, float], scale: float) -> Tuple[float, float]:
+    x = (screen_pos[0] - offset[0]) / scale
+    y = (screen_pos[1] - offset[1]) / scale
     return x, y
 
 def distance(a: Tuple[int,int], b: Tuple[int,int]) -> float:
@@ -78,13 +87,24 @@ def main():
             positions[nid] = {'x': (i % 10) * 240 + 200, 'y': (i // 10) * 160 + 120}
 
     pygame.init()
-    screen = pygame.display.set_mode((1200, 800))
+    screen_width, screen_height = 1200, 800
+    screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("DAG Viewer")
     clock = pygame.time.Clock()
     font = pygame.font.SysFont(None, FONT_SIZE)
     edge_font = pygame.font.SysFont(None, max(12, FONT_SIZE-2))
 
-    offset_x, offset_y = -100, -50  # initial translation of world -> screen
+    # Set initial offset to center on first node
+    scale = 1.0  # zoom level
+    if node_ids and positions:
+        first_node_id = sorted(node_ids)[0]
+        first_pos = positions[first_node_id]
+        # Center the first node on screen
+        offset_x = screen_width / 2 - first_pos['x'] * scale
+        offset_y = screen_height / 2 - first_pos['y'] * scale
+    else:
+        offset_x, offset_y = 0.0, 0.0
+
     panning = False
     pan_last = (0,0)
 
@@ -101,6 +121,28 @@ def main():
                     running = False
                 elif ev.key == pygame.K_s:
                     save_out(out_path, positions)
+            elif ev.type == pygame.MOUSEWHEEL:
+                # Zoom in/out with mouse wheel
+                mx, my = pygame.mouse.get_pos()
+                # Get world coordinates of mouse before zoom
+                world_before = to_world((mx, my), (offset_x, offset_y), scale)
+
+                # Update scale
+                if ev.y > 0:  # scroll up = zoom in
+                    scale *= ZOOM_FACTOR
+                else:  # scroll down = zoom out
+                    scale /= ZOOM_FACTOR
+
+                # Clamp scale
+                scale = max(MIN_SCALE, min(MAX_SCALE, scale))
+
+                # Get world coordinates of mouse after zoom
+                world_after = to_world((mx, my), (offset_x, offset_y), scale)
+
+                # Adjust offset to keep mouse position stationary in world space
+                offset_x += (world_before[0] - world_after[0]) * scale
+                offset_y += (world_before[1] - world_after[1]) * scale
+
             elif ev.type == pygame.MOUSEBUTTONDOWN:
                 if ev.button == 1:  # left mouse down
                     mx, my = ev.pos
@@ -108,15 +150,13 @@ def main():
                     mods = pygame.key.get_mods()
                     clicked_node = None
                     for nid, pos in positions.items():
-                        sx, sy = to_screen((pos['x'], pos['y']), (offset_x, offset_y))
-                        if distance((sx,my),(sx,my)) is None:
-                            pass
-                        if distance((mx,my),(sx,sy)) <= NODE_RADIUS:
+                        sx, sy = to_screen((pos['x'], pos['y']), (offset_x, offset_y), scale)
+                        if distance((mx,my),(sx,sy)) <= NODE_RADIUS * scale:
                             clicked_node = nid
                             break
                     if mods & pygame.KMOD_SHIFT and clicked_node is not None:
                         dragging_node = clicked_node
-                        sx, sy = to_screen((positions[clicked_node]['x'], positions[clicked_node]['y']), (offset_x, offset_y))
+                        sx, sy = to_screen((positions[clicked_node]['x'], positions[clicked_node]['y']), (offset_x, offset_y), scale)
                         drag_node_offset = (sx - mx, sy - my)
                     else:
                         # start panning
@@ -141,9 +181,9 @@ def main():
                     mx, my = ev.pos
                     sx = mx + drag_node_offset[0]
                     sy = my + drag_node_offset[1]
-                    # update world coordinates inversely by offset
-                    positions[dragging_node]['x'] = sx - offset_x
-                    positions[dragging_node]['y'] = sy - offset_y
+                    # update world coordinates inversely by offset and scale
+                    positions[dragging_node]['x'] = (sx - offset_x) / scale
+                    positions[dragging_node]['y'] = (sy - offset_y) / scale
 
         screen.fill(BACKGROUND)
 
@@ -153,25 +193,26 @@ def main():
             ppos = positions.get(pid)
             if not ppos:
                 continue
-            p_screen = to_screen((ppos['x'], ppos['y']), (offset_x, offset_y))
+            p_screen = to_screen((ppos['x'], ppos['y']), (offset_x, offset_y), scale)
             children = node.get('children', [])
             for ch in children:
                 cid = int(ch['id'])
                 cpos = positions.get(cid)
                 if not cpos:
                     continue
-                c_screen = to_screen((cpos['x'], cpos['y']), (offset_x, offset_y))
+                c_screen = to_screen((cpos['x'], cpos['y']), (offset_x, offset_y), scale)
                 # compute line endpoints that stop at node border (circle)
                 dx = c_screen[0] - p_screen[0]
                 dy = c_screen[1] - p_screen[1]
                 dist = math.hypot(dx, dy) if (dx or dy) else 1.0
                 ux = dx / dist; uy = dy / dist
-                start = (int(p_screen[0] + ux * NODE_RADIUS), int(p_screen[1] + uy * NODE_RADIUS))
-                end = (int(c_screen[0] - ux * NODE_RADIUS), int(c_screen[1] - uy * NODE_RADIUS))
-                pygame.draw.line(screen, EDGE_COLOR, start, end, 2)
+                scaled_radius = NODE_RADIUS * scale
+                start = (int(p_screen[0] + ux * scaled_radius), int(p_screen[1] + uy * scaled_radius))
+                end = (int(c_screen[0] - ux * scaled_radius), int(c_screen[1] - uy * scaled_radius))
+                pygame.draw.line(screen, EDGE_COLOR, start, end, max(1, int(2 * scale)))
 
                 # draw simple arrowhead
-                ah_size = 10
+                ah_size = 10 * scale
                 left = (end[0] - int(ux * ah_size) - int(uy * ah_size/2),
                         end[1] - int(uy * ah_size) + int(ux * ah_size/2))
                 right = (end[0] - int(ux * ah_size) + int(uy * ah_size/2),
@@ -180,7 +221,7 @@ def main():
 
                 # edge label at midpoint
                 label = ch.get('connLabel') or ''
-                if label:
+                if label and scale > 0.5:  # only show labels when zoomed in enough
                     mx = (start[0] + end[0]) // 2
                     my = (start[1] + end[1]) // 2
                     text_surf = edge_font.render(label, True, TEXT_COLOR)
@@ -191,16 +232,21 @@ def main():
 
         # draw nodes on top
         for nid, pos in positions.items():
-            sx, sy = to_screen((pos['x'], pos['y']), (offset_x, offset_y))
-            pygame.draw.circle(screen, NODE_COLOR, (sx, sy), NODE_RADIUS)
-            pygame.draw.circle(screen, NODE_BORDER, (sx, sy), NODE_RADIUS, 2)
-            label = str(nodes.get(str(nid), {}).get('label', str(nid)))
-            text_surf = font.render(label, True, TEXT_COLOR)
-            ts_rect = text_surf.get_rect(center=(sx, sy))
-            screen.blit(text_surf, ts_rect)
+            sx, sy = to_screen((pos['x'], pos['y']), (offset_x, offset_y), scale)
+            scaled_radius = NODE_RADIUS * scale
+            pygame.draw.circle(screen, NODE_COLOR, (sx, sy), int(scaled_radius))
+            pygame.draw.circle(screen, NODE_BORDER, (sx, sy), int(scaled_radius), max(1, int(2 * scale)))
+
+            # only show labels when zoomed in enough
+            if scale > 0.4:
+                label = str(nodes.get(str(nid), {}).get('label', str(nid)))
+                text_surf = font.render(label, True, TEXT_COLOR)
+                ts_rect = text_surf.get_rect(center=(sx, sy))
+                screen.blit(text_surf, ts_rect)
 
         # small HUD
-        fps_text = font.render(f"FPS: {int(clock.get_fps())}  Nodes: {len(positions)}  Pan: LMB/ RMB drag  Shift+L drag node  S=save", True, (200,200,200))
+        hud_text = f"FPS: {int(clock.get_fps())}  Nodes: {len(positions)}  Zoom: {scale:.2f}x  Pan: LMB/RMB  Scroll: Zoom  Shift+LMB: Move  S: Save"
+        fps_text = font.render(hud_text, True, (200,200,200))
         screen.blit(fps_text, (8,8))
 
         pygame.display.flip()

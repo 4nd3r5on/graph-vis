@@ -34,8 +34,8 @@ func GetClassifiedNodes(nodes map[int64]*Node) ClassifiedNodes {
 	return out
 }
 
-func SetupSpringLengths(nodes map[int64]*Node, classified ClassifiedNodes, font FontConfig) {
-	const gapCoef = 1.3
+func SetupNodes(nodes map[int64]*Node, classified ClassifiedNodes, font FontConfig) {
+	const gapCoef = 0.5
 	var avgSpringLen float64 = 0
 	var maxSpringLen float64 = 0
 
@@ -56,5 +56,16 @@ func SetupSpringLengths(nodes map[int64]*Node, classified ClassifiedNodes, font 
 	// they have bigger spring length cuz we want to push them more on the outside from the system
 	for _, nodeID := range classified.Free {
 		nodes[nodeID].SpringLen = maxSpringLen
+	}
+
+	for _, node := range nodes {
+		node.ParentIDsMap = make(map[int64]struct{}, len(node.ParentIDs))
+		for _, id := range node.ParentIDs {
+			node.ParentIDsMap[id] = struct{}{}
+		}
+		node.ChildrenIDsMap = make(map[int64]struct{}, len(node.Children))
+		for _, child := range node.Children {
+			node.ChildrenIDsMap[child.ID] = struct{}{}
+		}
 	}
 }

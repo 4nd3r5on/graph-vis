@@ -13,5 +13,8 @@ type Node struct {
 	Children  []*ChildNodeData `json:"children"`
 	Pos       vec.Vec
 
+	ParentIDsMap   map[int64]struct{}
+	ChildrenIDsMap map[int64]struct{}
+
 	SpringLen float64 `json:"springLen"` // for physics simulations to not recalculate it
 }

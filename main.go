@@ -10,9 +10,9 @@ import (
 
 func main() {
 	const (
-		maxIterations  = int64(1_000_000)
-		forceThreshold = 0.001
-		initCooling    = 0.9
+		maxIterations  = int64(100_000)
+		forceThreshold = 0.01
+		initCooling    = 0.5
 	)
 
 	input, err := format.ReadJsonInput("input.json")
@@ -23,7 +23,7 @@ func main() {
 	boundVec := vec.Boundaries(len(input.Nodes), 10)
 	nodes := format.ConvertInputNodes(input.Nodes, boundVec)
 	classified := graph.GetClassifiedNodes(nodes)
-	graph.SetupSpringLengths(nodes, classified, input.Font)
+	graph.SetupNodes(nodes, classified, input.Font)
 
 	forceMap := make(map[int64]vec.Vec, len(nodes))
 	for id := range nodes {
@@ -42,36 +42,7 @@ func main() {
 
 		// Compute forces for root -> children and global repulsion
 		for _, rootID := range classified.Root {
-			parent := nodes[rootID]
-
-			fSum := vec.Vec{}
-			for toID, toNode := range nodes {
-				if toID == rootID {
-					continue
-				}
-				fSum = vec.Add(fSum, physics.RepulsiveForce(parent.Pos, toNode.Pos, parent.SpringLen))
-			}
-			forceMap[rootID] = vec.Add(forceMap[rootID], fSum)
-
-			for _, childData := range parent.Children {
-				child := nodes[childData.ID]
-
-				fAttr := physics.AttractiveForce(child.Pos, parent.Pos, parent.SpringLen)
-				fRep := physics.RepulsiveForce(child.Pos, parent.Pos, parent.SpringLen)
-
-				// Net parent-child force
-				fSum := vec.Add(fAttr, fRep)
-
-				// Repulsion with all other nodes
-				for toID, toNode := range nodes {
-					if toID == rootID || toID == childData.ID {
-						continue
-					}
-					fSum = vec.Add(fSum, physics.RepulsiveForce(child.Pos, toNode.Pos, child.SpringLen))
-				}
-
-				forceMap[childData.ID] = vec.Add(forceMap[childData.ID], fSum)
-			}
+			physics.RecursiveComputeForces(rootID, nodes, forceMap)
 		}
 
 		// Handle isolated (free) nodes
