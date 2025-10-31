@@ -10,9 +10,13 @@ import (
 
 func main() {
 	const (
-		maxIterations  = int64(100_000)
-		forceThreshold = 0.01
-		initCooling    = 0.5
+		maxIterations   = int64(100_000)
+		forceThreshold  = 0.01
+		initCooling     = 0.5
+		centerForce     = 0.05
+		attractiveForce = 1
+		repulsiveForce  = 50
+		springLen       = 250
 	)
 
 	input, err := format.ReadJsonInput("input.json")
@@ -38,24 +42,14 @@ func main() {
 	for {
 		iterNormalized := float64(iter) / float64(maxIterations)
 		cooling := physics.CoolingFunc(initCooling, iterNormalized)
+		seenMap := make(map[int64]struct{}, 0)
 		maxForceMag = 0
 
 		// Compute forces for root -> children and global repulsion
-		for _, rootID := range classified.Root {
-			physics.RecursiveComputeForces(rootID, nodes, forceMap)
-		}
-
-		// Handle isolated (free) nodes
-		for _, id := range classified.Free {
-			fromNode := nodes[id]
-			fSum := vec.Vec{}
-			for toID, toNode := range nodes {
-				if toID == id {
-					continue
-				}
-				fSum = vec.Add(fSum, physics.RepulsiveForce(fromNode.Pos, toNode.Pos, toNode.SpringLen))
+		for nodeID := range nodes {
+			if len(nodes[nodeID].ParentIDs) == 0 {
+				physics.RecursiveComputeForcesEads(nodeID, nodes, seenMap, forceMap, centerForce, attractiveForce, repulsiveForce, springLen)
 			}
-			forceMap[id] = vec.Add(forceMap[id], fSum)
 		}
 
 		// Apply forces and update positions
