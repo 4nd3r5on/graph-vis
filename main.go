@@ -13,10 +13,11 @@ func main() {
 		maxIterations   = int64(100_000)
 		forceThreshold  = 0.01
 		initCooling     = 0.5
-		centerForce     = 0.05
+		centerForce     = 0
 		attractiveForce = 1
 		repulsiveForce  = 50
 		springLen       = 250
+		nodeRad         = 80
 	)
 
 	input, err := format.ReadJsonInput("input.json")
@@ -48,7 +49,7 @@ func main() {
 		// Compute forces for root -> children and global repulsion
 		for nodeID := range nodes {
 			if len(nodes[nodeID].ParentIDs) == 0 {
-				physics.RecursiveComputeForcesEads(nodeID, nodes, seenMap, forceMap, centerForce, attractiveForce, repulsiveForce, springLen)
+				physics.RecursiveComputeForcesEads(nodeID, nodes, seenMap, forceMap, centerForce, attractiveForce, repulsiveForce, springLen, nodeRad)
 			}
 		}
 

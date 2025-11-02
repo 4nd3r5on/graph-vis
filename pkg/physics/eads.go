@@ -6,6 +6,13 @@ import (
 	"math"
 )
 
+const minDist = 1e-6
+const maxForce = 1e6
+
+func CoolingFunc(initCooling float64, currentIter float64) (cooling float64) {
+	return initCooling * (1 - currentIter*currentIter)
+}
+
 // RepulsiveForce calculates the repulsive force between two positions
 func RepulsiveForceEads(from, to vec.Vec, force float64) vec.Vec {
 	diff := vec.Sub(from, to)
@@ -39,6 +46,22 @@ func AttractiveForceEads(from, to vec.Vec, fRep vec.Vec, force, springLen float6
 		vec.Mul(vec.Unit(diff), force*math.Log(dist/springLen)), fRep)
 }
 
+// c is constant (some small value, smaller than 1, bigger than 0)
+func CentralForce(nodePos vec.Vec, c float64) vec.Vec {
+	return vec.Mul(nodePos, c*-1.0)
+}
+
+func AntiCollisionForce(from, to vec.Vec, collisionRad float64) vec.Vec {
+	diff := vec.Sub(from, to)
+	dist := vec.Mag(diff)
+
+	if dist >= collisionRad || dist == 0 {
+		return vec.Vec{}
+	}
+	magnitude := collisionRad - dist
+	return vec.Mul(vec.Unit(diff), magnitude)
+}
+
 // ComputeForces recursively calculates forces in the hierarchy
 func RecursiveComputeForcesEads(
 	id int64,
@@ -48,7 +71,8 @@ func RecursiveComputeForcesEads(
 	centerForce,
 	attractiveForce,
 	repulsiveForce,
-	springLen float64,
+	springLen,
+	collisionRad float64,
 ) {
 	if _, seen := seenMap[id]; seen {
 		return
@@ -58,6 +82,7 @@ func RecursiveComputeForcesEads(
 
 	// compute repulsive
 	for otherID, other := range nodes {
+		forceMap[id] = vec.Add(forceMap[id], AntiCollisionForce(node.Pos, other.Pos, collisionRad))
 		_, isParent := node.ParentIDsMap[otherID]
 		_, isChild := node.ChildrenIDsMap[otherID]
 		if otherID == id || isParent || isChild {
@@ -65,7 +90,7 @@ func RecursiveComputeForcesEads(
 		}
 		forceMap[id] = vec.Add(forceMap[id], RepulsiveForceEads(node.Pos, other.Pos, repulsiveForce))
 	}
-	// forceMap[id] = vec.Add(forceMap[id], CentralForce(node.Pos, centerForce))
+	forceMap[id] = vec.Add(forceMap[id], CentralForce(node.Pos, centerForce))
 
 	for _, parentID := range node.ParentIDs {
 		parent := nodes[parentID]
@@ -84,6 +109,16 @@ func RecursiveComputeForcesEads(
 			fRep,
 			AttractiveForceEads(node.Pos, child.Pos, fRep, attractiveForce, springLen),
 		)
-		RecursiveComputeForcesEads(childData.ID, nodes, seenMap, forceMap, centerForce, attractiveForce, repulsiveForce, springLen)
+		RecursiveComputeForcesEads(
+			childData.ID,
+			nodes,
+			seenMap,
+			forceMap,
+			centerForce,
+			attractiveForce,
+			repulsiveForce,
+			springLen,
+			collisionRad,
+		)
 	}
 }
